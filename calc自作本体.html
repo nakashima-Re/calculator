@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta charset="utf-8">
+		<title>電卓</title>
+		<script>
+			ans = 0;
+			num = "0";
+			key = "";
+			kigou = "";
+			
+			function keisan_main(btn) {
+				if (!isNaN(btn)) {
+					if (!isNaN(key)) {
+						if (num == "0") {
+							num = "" + btn; //0が表示されているなら、0を消してbtnを表示
+						} else {
+							num += "" + btn;
+						}
+					} else {
+						num = "" + btn;
+					}
+					document.getElementById("total").innerHTML = num;
+				} else {
+					if (!isNaN(key)) {
+						//最初にeval()を実行する時、ansの0が文字列に入るのを防ぐ。
+						if (kigou == "") {
+							ans = num;
+						} else {
+							work = ans + kigou + num;
+							ans = eval(work);
+						}
+						num = "0";
+						document.getElementById("total").innerHTML = ans;
+					}
+					kigou = btn;
+					document.getElementById("total").innerHTML = kigou;
+				}
+				key = btn;
+			}
+			
+			//イコール、クリア、小数点は動きが特殊なので別で関数を作る
+			function keisan_clear() {
+				ans = 0;
+				num = "0";
+				key = "";
+				kigou = "";
+				document.getElementById("total").innerHTML = ans;
+			}
+			
+			function keisan_period() {
+				if (num.indexOf(".") < 0) {
+					key = 0;
+					num += ".";
+				}
+				document.getElementById("total").innerHTML = num;
+			}
+			
+			function keisan_equal() {
+				if (kigou == "") {
+					ans = num;
+				} else {
+					work = ans + kigou + num
+					ans = eval(work);
+				}
+				num = "0";
+				document.getElementById("total").innerHTML = ans;
+			}
+		</script>
+	</head>
+	<body>
+		<table border="1">
+			<tr>
+				<th colspan="3" align="right"><div id="total">0</div></th>
+				<td><input type="button" value="c" onClick="keisan_clear()"></td>
+			</tr>
+			<tr>
+				<td><input type="button" value="7" onClick="keisan_main(7)"></td>
+				<td><input type="button" value="8" onClick="keisan_main(8)"></td>
+				<td><input type="button" value="9" onClick="keisan_main(9)"></td>
+				<td><input type="button" value="+" onClick="keisan_main('+')"></td>
+			</tr>
+			<tr>
+				<td><input type="button" value="4" onClick="keisan_main(4)"></td>
+				<td><input type="button" value="5" onClick="keisan_main(5)"></td>
+				<td><input type="button" value="6" onClick="keisan_main(6)"></td>
+				<td><input type="button" value="-" onClick="keisan_main('-')"></td>
+			</tr>
+			<tr>
+				<td><input type="button" value="1" onClick="keisan_main(1)"></td>
+				<td><input type="button" value="2" onClick="keisan_main(2)"></td>
+				<td><input type="button" value="3" onClick="keisan_main(3)"></td>
+				<td><input type="button" value="x" onClick="keisan_main('*')"></td>
+			</tr>
+			<tr>
+				<td><input type="button" value="・" onClick="keisan_period()"></td>
+				<td><input type="button" value="0" onClick="keisan_main(0)"></td>
+				<td><input type="button" value="=" onClick="keisan_equal()"></td>
+				<td><input type="button" value="/" onClick="keisan_main('/')"></td>
+			</tr>
+		</table>
+	</body>
+</head>
